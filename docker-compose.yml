@@ -1,0 +1,11 @@
+version: "2"
+services:
+  ledger-server:
+    container_name: ledger
+    build:
+      context: ./ledger-server
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      - PORT=3000

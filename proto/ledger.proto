@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package ledger;
+
+service Ledger {
+    rpc CreateTransaction (CreateTransactionRequest) returns (Transaction) {}
+    rpc GetTransactions (ListTransactionsRequest) returns (TransactionsReply) {}
+    rpc GetTransaction (GetTransactionRequest) returns (Transaction) {}
+}
+
+message CreateTransactionRequest {
+    string partyId = 1;
+    string sourceLedgerId = 2;
+    string destinationLedgerId = 3;
+    int32 amountInPence = 4;
+}
+
+message Transaction {
+    bool success = 1;
+    string transactionId = 2;
+    int32 amountInPence = 3;
+}
+
+message GetTransactionRequest {
+    string transactionId = 1;
+}
+
+message ListTransactionsRequest {
+    string partyId = 1;
+    string sourceLedgerId = 2;
+}
+
+message TransactionsReply {
+    string ledgerId = 1;
+    repeated Transaction transactions = 2;
+}
+
+
