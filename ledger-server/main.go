@@ -1,13 +1,13 @@
 package main
 
 import (
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 	"flag"
-	"net"
 	"fmt"
 	_ "github.com/golang/protobuf/proto"
-	pb "../proto"
+	pb "github.com/jackgardner/go-ledger/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
+	"net"
 )
 
 var (
@@ -15,7 +15,7 @@ var (
 )
 
 func newServer() *LedgerServer {
-	return &LedgerServer {
+	return &LedgerServer{
 		Transactions: map[string]*pb.Transaction{},
 	}
 }
@@ -29,7 +29,6 @@ func main() {
 	grpclog.Printf("Listening on port: %d", *port)
 
 	var opts []grpc.ServerOption
-
 
 	// TODO Server cert
 

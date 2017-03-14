@@ -21,6 +21,11 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
@@ -174,6 +179,144 @@ func init() {
 	proto.RegisterType((*GetTransactionRequest)(nil), "ledger.GetTransactionRequest")
 	proto.RegisterType((*ListTransactionsRequest)(nil), "ledger.ListTransactionsRequest")
 	proto.RegisterType((*TransactionsReply)(nil), "ledger.TransactionsReply")
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// Client API for Ledger service
+
+type LedgerClient interface {
+	CreateTransaction(ctx context.Context, in *CreateTransactionRequest, opts ...grpc.CallOption) (*Transaction, error)
+	GetTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*TransactionsReply, error)
+	GetTransaction(ctx context.Context, in *GetTransactionRequest, opts ...grpc.CallOption) (*Transaction, error)
+}
+
+type ledgerClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewLedgerClient(cc *grpc.ClientConn) LedgerClient {
+	return &ledgerClient{cc}
+}
+
+func (c *ledgerClient) CreateTransaction(ctx context.Context, in *CreateTransactionRequest, opts ...grpc.CallOption) (*Transaction, error) {
+	out := new(Transaction)
+	err := grpc.Invoke(ctx, "/ledger.Ledger/CreateTransaction", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ledgerClient) GetTransactions(ctx context.Context, in *ListTransactionsRequest, opts ...grpc.CallOption) (*TransactionsReply, error) {
+	out := new(TransactionsReply)
+	err := grpc.Invoke(ctx, "/ledger.Ledger/GetTransactions", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ledgerClient) GetTransaction(ctx context.Context, in *GetTransactionRequest, opts ...grpc.CallOption) (*Transaction, error) {
+	out := new(Transaction)
+	err := grpc.Invoke(ctx, "/ledger.Ledger/GetTransaction", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for Ledger service
+
+type LedgerServer interface {
+	CreateTransaction(context.Context, *CreateTransactionRequest) (*Transaction, error)
+	GetTransactions(context.Context, *ListTransactionsRequest) (*TransactionsReply, error)
+	GetTransaction(context.Context, *GetTransactionRequest) (*Transaction, error)
+}
+
+func RegisterLedgerServer(s *grpc.Server, srv LedgerServer) {
+	s.RegisterService(&_Ledger_serviceDesc, srv)
+}
+
+func _Ledger_CreateTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServer).CreateTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ledger.Ledger/CreateTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServer).CreateTransaction(ctx, req.(*CreateTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Ledger_GetTransactions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTransactionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServer).GetTransactions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ledger.Ledger/GetTransactions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServer).GetTransactions(ctx, req.(*ListTransactionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Ledger_GetTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LedgerServer).GetTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ledger.Ledger/GetTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LedgerServer).GetTransaction(ctx, req.(*GetTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Ledger_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ledger.Ledger",
+	HandlerType: (*LedgerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateTransaction",
+			Handler:    _Ledger_CreateTransaction_Handler,
+		},
+		{
+			MethodName: "GetTransactions",
+			Handler:    _Ledger_GetTransactions_Handler,
+		},
+		{
+			MethodName: "GetTransaction",
+			Handler:    _Ledger_GetTransaction_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "proto/ledger.proto",
 }
 
 func init() { proto.RegisterFile("proto/ledger.proto", fileDescriptor0) }
