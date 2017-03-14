@@ -1,4 +1,4 @@
 .PHONY: proto
 
 proto: proto/*.proto
-	protoc -I=. proto/*.proto --go_out=plugins=grpc:$(GOPATH)/src/github.com/jackgardner/go-ledger
+	protoc -I proto proto/*.proto --go_out=plugins=grpc:proto
