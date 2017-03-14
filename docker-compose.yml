@@ -3,8 +3,10 @@ services:
   ledger-server:
     container_name: ledger
     build:
-      context: ./ledger-server
-      dockerfile: ./Dockerfile.dev
+      context: .
+      dockerfile: ./ledger-server/Dockerfile.dev
+    volumes:
+      - .:/go/src/app
     ports:
       - 3000:3000
     environment:

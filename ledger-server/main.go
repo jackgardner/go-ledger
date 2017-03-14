@@ -1,7 +1,7 @@
 package main
 
 import (
-	"flag"
+	"github.com/namsral/flag"
 	"fmt"
 	_ "github.com/golang/protobuf/proto"
 	pb "github.com/jackgardner/go-ledger/proto"
@@ -9,9 +9,8 @@ import (
 	"google.golang.org/grpc/grpclog"
 	"net"
 )
-
 var (
-	port = flag.Int("port", 3000, "Service port")
+	port int
 )
 
 func newServer() *LedgerServer {
@@ -21,12 +20,16 @@ func newServer() *LedgerServer {
 }
 
 func main() {
+
+	flag.IntVar(&port, "port", 3000, "Service port")
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
+
 	if err != nil {
 		grpclog.Fatalf("Failed to listen: %v", err)
 	}
-	grpclog.Printf("Listening on port: %d", *port)
+	grpclog.Printf("Listening on port: %d", port)
 
 	var opts []grpc.ServerOption
 
