@@ -1,6 +1,20 @@
 version: "2"
 services:
-  ledger-server:
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile.dev
+    volumes:
+      - .:/go/src/app
+    ports:
+      - 8080:8080
+    links:
+      - ledger:ledger
+    environment:
+      - PORT=8080
+      - LEDGER_SERVICE_ADDR=ledger:3000
+  ledger:
     container_name: ledger
     build:
       context: .

@@ -8,14 +8,27 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 	"net"
+	"io/ioutil"
+	"encoding/json"
 )
 var (
 	port int
 )
 
 func newServer() *LedgerServer {
+	var transactions map[string]*pb.Transaction
+
+	file, err := ioutil.ReadFile("test_data.json")
+	if err != nil {
+		grpclog.Fatalf("Failed to load default ledger data: %v", err)
+	}
+
+	if err := json.Unmarshal(file, &transactions); err != nil {
+		grpclog.Fatalf("Failed to load default ledgar data: %v", err)
+	}
+
 	return &LedgerServer{
-		Transactions: map[string]*pb.Transaction{},
+		Transactions: transactions,
 	}
 }
 

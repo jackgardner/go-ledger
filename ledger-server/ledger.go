@@ -5,6 +5,7 @@ import (
 	pb "github.com/jackgardner/go-ledger/proto"
 	"golang.org/x/net/context"
 	"strconv"
+	"google.golang.org/grpc/grpclog"
 )
 
 type LedgerServer struct {
@@ -23,6 +24,7 @@ func (s *LedgerServer) GetTransaction(ctx context.Context, request *pb.GetTransa
 }
 
 func (s *LedgerServer) GetTransactions(ctx context.Context, request *pb.ListTransactionsRequest) (*pb.TransactionsReply, error) {
+	grpclog.Println("Request for transactions " request.SourceLedgerId)
 	values := make([]*pb.Transaction, len(s.Transactions))
 	i := 0
 	for _, k := range s.Transactions {

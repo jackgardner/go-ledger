@@ -1,0 +1,20 @@
+FROM golang:alpine
+RUN apk add --no-cache git
+
+RUN mkdir -p /go/src/app
+
+RUN go get github.com/Unknwon/bra
+
+COPY . /go/src/app
+COPY ./proto /go/src/github.com/jackgardner/go-ledger/proto
+
+WORKDIR /go/src/app/gateway
+
+RUN go-wrapper download
+RUN go-wrapper install
+
+ENV PORT 3000
+
+EXPOSE 3000
+
+CMD bra run
